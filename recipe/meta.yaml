@@ -21,6 +21,8 @@ requirements:
   host:
     - pip
     - python
+    - wheel
+  build:
     - patch     # [not win]
     - m2-patch  # [win]
   run:
@@ -114,6 +116,7 @@ outputs:
 about:
   home: https://robotframework.org
   license: Apache-2.0
+  license_family: Apache
   license_file:
     - dist/LICENSE.txt
     - dist/COPYRIGHT.txt
