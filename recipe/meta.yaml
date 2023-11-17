@@ -13,6 +13,7 @@ source:
     folder: src
     patches:
       - patches/0001_skip-tests-wrong-timezone-set.patch
+      - patches/0002_skip-test_clear_namespace_between_runs-for-win.patch  # [win]
 
 build:
   number: 0
@@ -42,6 +43,7 @@ outputs:
       host:
         - pip
         - python
+        - wheel
       run:
         - python
     test:
@@ -72,9 +74,12 @@ outputs:
         # - rebot --version
         # - libdoc --version
         # generate simple test file (`echo` and `>>` are cross-platform)
-        - echo "*** Test Cases ***"                   >> test-{{ version }}.robot
-        - echo "Hello World"                          >> test-{{ version }}.robot
-        - echo "    Log   %{PKG_NAME} %{PKG_VERSION}" >> test-{{ version }}.robot
+        - echo "*** Test Cases ***"                   >> test-{{ version }}.robot  # [unix]
+        - echo "Hello World"                          >> test-{{ version }}.robot  # [unix]
+        - echo "    Log   %{PKG_NAME} %{PKG_VERSION}" >> test-{{ version }}.robot  # [unix]
+        # on win the quotes are rendered in the files, and they would be incorrect test files
+        - echo *** Test Cases *** >> test-{{ version }}.robot  # [win]
+        - echo|(set /p="Hello World    Log   %%{PKG_NAME} %%{PKG_VERSION}" & echo.) >> test-{{ version }}.robot  # [win]
         # smoke test
         - robot test-{{ version }}.robot
         - rebot output.xml
@@ -85,6 +90,7 @@ outputs:
       host:
         - pip
         - python
+        - wheel
       run:
         - python
         - {{ pin_subpackage('robotframework', exact=True) }}
@@ -100,13 +106,18 @@ outputs:
       source_files:
         - src/utest
         - src/atest
+        # win does not copy this one only subfolder
+        - src/atest/testresources  # [win] 
         - src/doc/schema
         - src/README.rst
       commands:
         - pip check
-        - cd src/utest && python run.py
+        - cd src
+        - cd utest 
+        - python run.py
       about:
         license: Apache-2.0
+        license_family: Apache
         license_file:
           - dist/LICENSE.txt
           - dist/COPYRIGHT.txt
