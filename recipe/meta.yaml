@@ -45,6 +45,7 @@ outputs:
         - pip
         - python
         - wheel
+        - setuptools
       run:
         - python
     test:
@@ -92,6 +93,7 @@ outputs:
         - pip
         - python
         - wheel
+        - setuptools
       run:
         - python
         - {{ pin_subpackage('robotframework', exact=True) }}
