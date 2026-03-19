@@ -2,3 +2,7 @@ anaconda_config_version: 1
 upstream_sources:
   - pypi:
       identifier: robotframework
+      packages: &id001
+        - _robotframework_tests
+        - robotframework
+    packages: *id001
