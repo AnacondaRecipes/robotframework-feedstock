@@ -1,0 +1,30 @@
+From ca249542582f2b5d69a409e32bc7e11967ff7237 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Pekka=20Kl=C3=A4rck?= <peke@iki.fi>
+Date: Fri, 23 Oct 2026 13:21:56 +0300
+Subject: [PATCH] Fix `isatty` utility with detached buffers
+
+Fixes #5825.
+---
+ src/robot/utils/misc.py | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/robot/utils/misc.py b/src/robot/utils/misc.py
+index 2f45fe79fbb..bf713686bdd 100644
+--- a/src/robot/utils/misc.py
++++ b/src/robot/utils/misc.py
+@@ -116,14 +116,11 @@ def replace(test):
+ 
+ 
+ def isatty(stream):
+-    # first check if buffer was detached
+-    if hasattr(stream, "buffer") and stream.buffer is None:
+-        return False
+     if not hasattr(stream, "isatty"):
+         return False
+     try:
+         return stream.isatty()
+-    except ValueError:  # Occurs if file is closed.
++    except ValueError:  # Occurs if stream is closed or its buffer is detached.
+         return False
+ 
+ 

@@ -8,6 +8,8 @@ source:
   - url: https://pypi.org/packages/source/r/robotframework/robotframework-{{ version }}.tar.gz
     sha256: ff6233ff752a200ece4d0a6c59f6f9f7d0e96dcff0a7a3458296b997b812482e
     folder: dist
+    patches:
+      - patches/0001_fix-isatty-with-detached-buffer.patch
   - url: https://github.com/robotframework/robotframework/archive/v{{ version }}.tar.gz
     sha256: 839070f2612be5ae7519f6e4f77b19fc7c8e4ea0b873e802019dbb12efa9428b
     folder: src
