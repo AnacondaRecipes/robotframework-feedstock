@@ -16,7 +16,7 @@ source:
       - patches/0002_skip-test_clear_namespace_between_runs-for-win.patch  # [win]
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   host:
@@ -24,9 +24,6 @@ requirements:
     - python
     - wheel
     - setuptools
-  build:
-    - patch     # [not win]
-    - m2-patch  # [win]
   run:
     - python
 
